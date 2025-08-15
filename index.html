@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Word Wheel</title>
+  <style>
+      /* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+}
+
+.wheel-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+canvas {
+  border-radius: 50%;
+  border: 5px solid #333;
+}
+
+  </style>
+</head>
+<body>
+  <div class="wheel-container">
+    <canvas id="wordWheel" width="500" height="500"></canvas>
+  </div>
+  
+  <script>
+      // script.js
+const canvas = document.getElementById('wordWheel');
+const ctx = canvas.getContext('2d');
+
+// List of words to appear on the wheel
+const words = [
+  "Unaware", "Ignored", "Overlooked", "Missed", "Accidentally encountered", 
+  "Stumbled upon", "Found", "Noticed","Detected", "Recognized", "Spotted", 
+  "Searched for", "Inquired about", "Investigated", "Examined", 
+  "Scrutinized", "Researched", "Deliberately sought", "Pursued", "Tracked down"
+];
+
+// Colors for each section, indicating depth
+const colors = [
+  "#D3D3D3", "#C0C0C0", "#A9A9A9", "#808080", "#696969", 
+  "#585858", "#505050", "#464646", "#383838", "#2F2F2F", "#2F2F2F", 
+  "#1E1E1E", "#121212", "#0A0A0A", "#060606", "#000000", 
+  "#190000", "#3A0000", "#550000", "#7F0000"
+];
+
+const numSections = words.length;
+const anglePerSection = 2 * Math.PI / numSections; // Angle for each section
+
+function drawWheel() {
+  const radius = canvas.width / 2;
+
+  // Draw each section
+  for (let i = 0; i < numSections; i++) {
+    const startAngle = anglePerSection * i;
+    const endAngle = startAngle + anglePerSection;
+
+    // Set color for this section based on depth
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    ctx.moveTo(radius, radius);  // Move to the center of the wheel
+    ctx.arc(radius, radius, radius, startAngle, endAngle);  // Draw the arc
+    ctx.fill();
+
+    // Add text to the section (centered within each section)
+    ctx.fillStyle = "#fff";  // White text color
+    ctx.font = "14px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.save();
+    ctx.translate(radius, radius);  // Move to center
+    ctx.rotate(startAngle + anglePerSection / 2);  // Rotate to correct section
+    ctx.fillText(words[i], radius * 0.6, 0);  // Draw text slightly inward
+    ctx.restore();
+  }
+}
+
+// Initialize the wheel
+drawWheel();
+
+  </script>
+</body>
+</html>
